@@ -1,3 +1,7 @@
+/**
+ * js里的数组本身就是动态的，所以在js里用数组实现循环队列其实是不太合理的
+ * 需要我们假设数组是有容量限制的，然后循环，到适当的时候扩容缩容
+ */
 export interface Queue<T> {
   // O(1)
   enqueue(item: T): void
@@ -69,8 +73,6 @@ export default class LoopQueue<T> implements Queue<T> {
     return ret
   }
 
-  // 其实在js里不需要resize，因为js中数组就是动态的
-  // 所以后面也没有理由去用链表实现栈和队列了
   private resize(newCapacity: number): void {
     let newData = Array(newCapacity + 1)
 
