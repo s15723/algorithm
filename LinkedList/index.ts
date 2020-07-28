@@ -11,8 +11,10 @@ class LinkedNode<T> {
     }
 }
 
-class LinkedList<T> {
+export default class LinkedList<T> {
     // 虚拟头节点
+    // 用于统一对链表两侧进行的操作和对链表中间元素进行的操作
+    // 如果只是对链表两侧进行操作，就没必要用虚拟头节点了 
     private dummyHead: LinkedNode<T>
     private size: number
 

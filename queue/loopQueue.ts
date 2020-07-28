@@ -93,7 +93,7 @@ export default class LoopQueue<T> implements Queue<T> {
     return this.data[this.front]
   }
 
-  print() {
+  toString() {
     let str = 'front ['
 
     for (let i = this.front; i !== this.tail; i = (i + 1) % this.data.length) {
@@ -116,5 +116,5 @@ for (let i = 0; i < 10; i++) {
     loop1.dequeue()
   }
 }
-loop1
-console.log(loop1.print())
+console.log(loop1)
+console.log(loop1.toString())

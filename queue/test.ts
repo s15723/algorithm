@@ -1,5 +1,6 @@
 import ArrayQueue from './arrayQueue'
 import LoopQueue, { Queue } from './loopQueue'
+import LinkedListQueue from './LinkedListQueue'
 
 const testQueue = (queue: Queue<number>, opCount) => {
     const startTime = Date.now()
@@ -31,7 +32,10 @@ const test = () => {
     const loopQueue = new LoopQueue<number>()
     const time2 = testQueue(loopQueue, opCount)
 
-    console.log(time1, time2)
+    const linkedListQueue = new LinkedListQueue<number>()
+    const time3 = testQueue(linkedListQueue, opCount)
+
+    console.log(time1, time2, time3)
     console.log('isLoopQueue faster:', time1 > time2)
 }
 
