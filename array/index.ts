@@ -1,222 +1,167 @@
-export default class myArray<T> {
-  private data: T[]
-  // size表示数组中有多少个元素，size指向数组中第一个没有元素的位置，最大为 data.length
-  private size: number = 0
+import deepEqual from './deepEqual';
 
-  constructor(capacity: number = 10) {
-    this.data = Array<T>(capacity)
-  }
+export interface MyArray<T> {
+    getSize: () => number;
+    getCapacity: () => number;
+    isEmpty: () => boolean;
 
-  getSize(): number {
-    return this.size
-  }
+    // 增
+    splice: (index: number, item: T) => void;
+    push: (item: T) => void;
+    unshift: (item: T) => void;
 
-  getCapacity(): number {
-    return this.data.length
-  }
+    // 查
+    get: (index: number) => T;
+    getFirst: () => T;
+    getLast: () => T;
+    contains: (item: T) => boolean;
+    findIndex: (item: T) => number;
 
-  isEmpty(): boolean {
-    return this.size === 0
-  }
+    // 改
+    set: (index: number, item: T) => void;
 
-  // O(1)
-  push(...items: T[]): void {
-    this.splice(this.size, 0, ...items)
-  }
+    // 删
+    remove: (index: number) => T;
+    pop: () => T;
+    shift: () => T;
+    removeElement: (item: T) => void;
 
-  // O(n)
-  unshift(...items: T[]): void {
-    this.splice(0, 0, ...items)
-  }
-
-  // 添加函数
-  // 平均 O(n/2) ==> O(n)
-  splice(index: number, howmany: number, ...items: T[]): void {
-    // 添加操作，为了保证数组的连续性，最大只能在 size 处添加元素(相当于push)
-    if (index < 0 || index > this.size) {
-      throw new Error(`index需要大于0，不大于${this.size}`)
-    }
-
-    for (let i = this.size - 1; i >= index; i--) {
-      this.data[i + items.length] = this.data[i]
-    }
-
-    for (let i = 0; i < items.length; i++) {
-      this.data[index + i] = items[i]
-      this.size++
-      if (this.size === this.data.length) {
-        this.resize(this.data.length * 2)
-      }
-    }
-  }
-
-  // O(1)
-  get(index: number): T {
-    // 元素 index 为 0 - size -1
-    if (index < 0 || index >= this.size) {
-      throw new Error(`index必须大于0，小于${this.size}`)
-    }
-    return this.data[index]
-  }
-
-  getFirst(): T {
-    return this.get(0)
-  }
-
-  getLast(): T {
-    return this.get(this.size - 1)
-  }
-
-  // O(1)
-  // 数组的最大优势，支持随机访问
-  set(index: number, item: T): void {
-    if (index < 0 || index > this.size) {
-      throw new Error(`index必须大于0，小于等于${this.size}`)
-    }
-    this.data[index] = item
-    if (index === this.size) {
-      this.size++
-    }
-  }
-
-  // O(n)
-  includes(item: T): boolean {
-    return this.data.some(_item => _item === item)
-  }
-
-  // 设计为寻找第一个值为 item 的 index
-  // O(n)
-  findIndex(item: T): number {
-    let index = -1
-    this.data.some((_item, idx) => {
-      if (_item === item) {
-        index = idx
-        return true
-      }
-    })
-    return index
-  }
-
-  // 删除函数
-  // O(n/2) ==> O(n)
-  remove(index: number): T {
-    if (index < 0 || index >= this.size) {
-      throw new Error(`index必须大于0，小于${this.size}`)
-    }
-
-    let ret = this.data[index]
-
-    for (let i = index + 1; i <= this.size; i++) {
-      this.data[i - 1] = this.data[i]
-    }
-
-    this.size--
-
-    if ((this.size === Math.floor(this.data.length / 4)) && (this.data.length / 2 !== 0)) {
-      this.resize(Math.floor(this.data.length / 2))
-    }
-
-    return ret
-  }
-
-  // O(1)
-  pop(): T {
-    return this.remove(this.size - 1)
-  }
-
-  // O(n)
-  shift(): T {
-    return this.remove(0)
-  }
-
-  // 删除的是第一个值为 item 的元素，因为 findIndex 设计为找到第一个值为 item 的 index
-  removeElement(item: T): boolean {
-    let removeSuccess = false
-    let index = this.findIndex(item)
-
-    if (index !== -1) {
-      this.remove(index)
-      removeSuccess = true
-    }
-
-    return removeSuccess
-  }
-
-  resize(newCapacity: number): void {
-    let newData = Array<T>(newCapacity)
-    for (let i = 0; i < this.size; i++) {
-      newData[i] = this.data[i]
-    }
-    this.data = newData
-  }
+    resize: (newCapacity: number) => void;
 }
 
-const arr: myArray<number> = new myArray(10)
-arr.push(2)
-arr.push(3)
-arr.splice(2, 0, 4, 5, 6, 7, 8)
-arr.unshift(1)
-arr.unshift(0)
-arr.set(9, 9)
-console.log(arr.getSize())
-console.log(arr.getCapacity())
-console.log(arr)
-console.log(arr.includes(3))
-console.log(arr.findIndex(2))
-console.log(arr.remove(2))
-arr.pop()
-arr.shift()
-console.log(arr)
-console.log(arr.removeElement(8))
-console.log(arr)
-console.log(arr.removeElement(8))
+export default class myArray<T> implements MyArray<T> {
+    private data: T[] = [];
+    private size: number = 0;
 
-arr.removeElement(1)
-console.log(arr)
+    constructor(capacity: number = 10) {
+        this.data = Array(capacity);
+    }
 
-arr.unshift(0, 1, 2)
-arr.push(8, 9)
-console.log(arr)
+    getSize() {
+        return this.size;
+    }
 
-arr.push(10)
-console.log(arr)
-console.log(arr.getCapacity())
+    getCapacity() {
+        return this.data.length;
+    }
 
-arr.unshift(-1)
-console.log(arr)
-console.log(arr.getCapacity())
+    isEmpty() {
+        return this.size === 0;
+    }
 
-arr.pop()
-console.log(arr)
-console.log(arr.getCapacity())
+    splice(index: number, item: T) {
+        if (index < 0 || index > this.size) {
+            throw new Error('Add failed. Require index >= 0 and index <= size.');
+        }
 
-arr.shift()
-console.log(arr)
-console.log(arr.getCapacity())
+        if (this.size === this.data.length) {
+            this.resize(this.data.length * 2);
+        }
 
-arr.pop()
-arr.pop()
-arr.pop()
-arr.pop()
-arr.pop()
-arr.push(5)
-arr.push(6)
-arr.push(7)
-arr.push(8)
-arr.push(9)
-console.log(arr)
-console.log(arr.getCapacity())
+        for (let i = this.size - 1; i >= index; i--) {
+            this.data[i + 1] = this.data[i];
+        }
 
+        this.data[index] = item;
+        this.size++;
+    }
 
-const newArr = new myArray<number>(5)
-console.log(newArr)
-console.log(newArr.getCapacity())
+    push(item: T) {
+        return this.splice(this.size, item);
+    }
 
-newArr.push(1, 2, 3, 4, 5)
-newArr.pop()
-newArr.pop()
-newArr.pop()
-console.log(newArr)
-console.log(newArr.getCapacity())
+    unshift(item: T) {
+        return this.splice(0, item);
+    }
 
+    get(index: number) {
+        if (index < 0 || index >= this.size) {
+            throw new Error('Get failed. Index is illegal.');
+        }
+        return this.data[index];
+    };
 
+    getFirst() {
+        return this.get(0);
+    };
+
+    getLast() {
+        return this.get(this.size - 1);
+    };
+
+    // 对象的比较
+    contains(item: T) {
+        for (let i = 0; i < this.size; i++) {
+            if (deepEqual(this.data[i], item)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // 对象的比较
+    findIndex(item: T) {
+        for (let i = 0; i < this.size; i++) {
+            if (deepEqual(this.data[i], item)) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    set(index: number, item: T) {
+        if (index < 0 || index >= this.size) {
+            throw new Error('Get failed. Index is illegal.');
+        }
+        this.data[index] = item;
+    };
+
+    remove(index: number) {
+        if (index < 0 || index >= this.size)
+            throw new Error("Remove failed. Index is illegal.");
+
+        let ret = this.data[index];
+        for (let i = index + 1; i < this.size; i++) {
+            this.data[i - 1] = this.data[i];
+        }
+        this.size--;
+        this.data[this.size] = null;
+
+        if (this.size === Math.ceil(this.data.length / 4) && this.data.length / 2 !== 0) {
+            this.resize(Math.ceil(this.data.length / 2));
+        }
+
+        return ret;
+    };
+
+    pop() {
+        return this.remove(this.size - 1);
+    }
+
+    shift() {
+        return this.remove(0);
+    }
+
+    removeElement(item: T) {
+        let removed = false;
+        let index = this.findIndex(item);
+        if (index !== -1) {
+            this.remove(index);
+            removed = true;
+        }
+        return removed;
+    }
+
+    resize(newCapacity: number) {
+        let newData: T[] = Array(newCapacity);
+        for (let i = 0; i < this.data.length; i++) {
+            newData[i] = this.data[i];
+        }
+        this.data = newData;
+    }
+}
+
+let arr = new myArray();
+arr.push({ a: 1 });
+console.log(arr.findIndex({ a: 1 }));
+console.log(arr.contains({ a: 1 }));
