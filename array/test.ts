@@ -6,9 +6,9 @@
 function test() {
     for (let i = 0; i < 10; i++) {
         if (i < 5) {
-            return i;
+            return i
         }
     }
 }
 
-console.log(test());
+console.log(test())

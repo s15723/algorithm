@@ -1,60 +1,44 @@
 import myArray from '../array'
-
-export interface Stack<T> {
-  // O(1)
-  getSize(): number
-
-  // O(1)
-  isEmpty(): boolean
-
-  // O(1) 均摊复杂度，可能会resize
-  push(item: T): void
-
-  // O(1) 均摊复杂度，可能会resize
-  pop(): T
-
-  // O(1)
-  peek(): T
-}
+import Stack from './Stack'
 
 // 第一种实现方式，基于动态数组
 export default class ArrayStack<T> implements Stack<T> {
-  private array: myArray<T>
+    private array: myArray<T>
 
-  constructor(capacity?: number) {
-    this.array = new myArray(capacity)
-  }
+    constructor(capacity?: number) {
+        this.array = new myArray(capacity)
+    }
 
-  getSize(): number {
-    return this.array.getSize()
-  }
+    getSize(): number {
+        return this.array.getSize()
+    }
 
-  isEmpty(): boolean {
-    return this.array.isEmpty()
-  }
+    isEmpty(): boolean {
+        return this.array.isEmpty()
+    }
 
-  // 这是基于动态数组实现的栈特有的方法
-  getCapacity(): number {
-    return this.array.getCapacity()
-  }
+    // 这是基于动态数组实现的栈特有的方法
+    getCapacity(): number {
+        return this.array.getCapacity()
+    }
 
-  push(item: T):void {
-    return this.array.push(item)
-  }
+    push(item: T): void {
+        return this.array.push(item)
+    }
 
-  pop(): T {
-    return this.array.pop()
-  }
+    pop(): T {
+        return this.array.pop()
+    }
 
-  peek(): T {
-    return this.array.getLast()
-  }
+    peek(): T {
+        return this.array.getLast()
+    }
 }
 
 const stack1 = new ArrayStack()
 console.log(stack1.isEmpty())
-for(let i = 0; i < 5; i++) {
-  stack1.push(i)
+for (let i = 0; i < 5; i++) {
+    stack1.push(i)
 }
 stack1.pop()
 console.log(stack1)

@@ -1,43 +1,43 @@
-const isObject = (obj: any): boolean => {
-    return typeof obj === 'object';
-};
+export const isObject = (obj: any): boolean => {
+    return typeof obj === 'object'
+}
 
 export default function deepEqual(obj1: any, obj2: any): boolean {
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
+    const keys1 = Object.keys(obj1)
+    const keys2 = Object.keys(obj2)
 
     if (keys1.length !== keys2.length) {
-        return false;
+        return false
     }
 
     for (const key of keys1) {
-        const val1 = obj1[key];
-        const val2 = obj2[key];
-        const allObject = isObject(val1) && isObject(val2);
+        const val1 = obj1[key]
+        const val2 = obj2[key]
+        const allObject = isObject(val1) && isObject(val2)
 
         if (
             (allObject && !deepEqual(val1, val2)) ||
             (!allObject && val1 !== val2)
         ) {
-            return false;
+            return false
         }
     }
 
-    return true;
+    return true
 }
 
 const hero1 = {
-    name: "Batman",
+    name: 'Batman',
     address: {
-        city: "Gotham",
+        city: 'Gotham',
     },
-};
+}
 const hero2 = {
-    name: "Batman",
+    name: 'Batman',
     address: {
-        city: "Gotham1",
-    }
-};
+        city: 'Gotham1',
+    },
+}
 
-console.log(hero1 == hero2);
-console.log(deepEqual(hero1, hero2));
+console.log(hero1 == hero2)
+console.log(deepEqual(hero1, hero2))
