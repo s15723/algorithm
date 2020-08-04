@@ -154,6 +154,22 @@ export default class LinkedList<T> {
 
         return res
     }
+
+    // 递归插入
+    insert(item: T) {
+        this.dummyHead.next = this._insert(this.dummyHead.next, item)
+    }
+
+    // 向 cur 后面插入 item
+    private _insert(cur: LinkedNode<T>, item: T): LinkedNode<T> {
+        if (cur === null) {
+            this.size++
+            return new LinkedNode(item)
+        }
+
+        cur.next = this._insert(cur.next, item)
+        return cur
+    }
 }
 
 let linkedList: LinkedList<number> = new LinkedList()
@@ -164,3 +180,9 @@ for (let i = 5; i >= 0; i--) {
 console.log(linkedList.removeElement(0))
 console.log(linkedList.removeElement(7))
 console.log('finally', linkedList.toString())
+
+let recursiveLinkedList: LinkedList<number> = new LinkedList()
+for (let i = 0; i < 5; i++) {
+    recursiveLinkedList.insert(i + Math.random())
+    console.log(recursiveLinkedList.toString())
+}
