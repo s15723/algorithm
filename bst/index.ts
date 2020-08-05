@@ -1,4 +1,8 @@
+/**
+ * 前、中、后序遍历都是深度优先遍历
+ */
 import BstNode from './BstNode'
+import LinkedListStack from '../stack/linkedListStack'
 
 export default class BST<T> {
     private root: BstNode<T> = null
@@ -54,7 +58,7 @@ export default class BST<T> {
         }
     }
 
-    // 前序遍历
+    // 前序遍历(递归)
     preOrder() {
         this._preOrder(this.root)
     }
@@ -68,6 +72,25 @@ export default class BST<T> {
         console.log(node.val)
         this._preOrder(node.left)
         this._preOrder(node.right)
+    }
+
+    // 前序遍历(非递归)，用栈来记录接下来要遍历的节点
+    preOrderNR() {
+        let stack = new LinkedListStack<BstNode<T>>()
+
+        stack.push(this.root)
+        while (!stack.isEmpty()) {
+            const cur = stack.pop()
+            console.log(cur.val)
+
+            // 先推右，再推左，因为要先遍历左，栈是后进先出的
+            if (cur.right !== null) {
+                stack.push(cur.right)
+            }
+            if (cur.left !== null) {
+                stack.push(cur.left)
+            }
+        }
     }
 
     // 中序遍历
@@ -132,15 +155,26 @@ export default class BST<T> {
 }
 
 let bst1 = new BST<number>()
-const nums = [5, 3, 6, 8, 4, 2]
-for (let i = 0; i < nums.length; i++) {
-    bst1.add(nums[i])
+const nums1 = [5, 3, 6, 8, 4, 2]
+for (let i = 0; i < nums1.length; i++) {
+    bst1.add(nums1[i])
 }
 
 // console.log(bst1)
 // console.log(bst1.contains(5))
 // console.log(bst1.contains(11))
 // bst1.preOrder()
-console.log('toString\n', bst1.toString())
+// console.log('toString\n', bst1.toString())
 // bst1.inOrder()
 // bst1.postOrder()
+
+let bst2 = new BST<number>()
+const nums2 = [28, 16, 13, 22, 30, 29, 42]
+for (let i = 0; i < nums2.length; i++) {
+    bst2.add(nums2[i])
+}
+// console.log('toString\n', bst2.toString())
+bst2.preOrder()
+// bst2.inOrder()
+// bst2.postOrder()
+bst2.preOrderNR()
