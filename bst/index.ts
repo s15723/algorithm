@@ -2,6 +2,12 @@
  * 前、中、后序遍历都是深度优先遍历，先顾及左子树
  *
  * 层序遍历，广度优先遍历
+ * 
+ * 待补充
+ * floor、ceil
+ * rank、select，维护 BstNode 的 size，以这个节点为根的二分搜索树有多少个元素
+ * 维护 BstNode 的 depth
+ * 支持重复元素，维护 BstNode 的 count
  */
 import BstNode from './BstNode'
 import LinkedListStack from '../stack/linkedListStack'
@@ -251,6 +257,51 @@ export default class BST<T> {
         return node
     }
 
+    remove(item: T): void {
+        this._remove(this.root, item)
+    }
+
+    // 删除以 node 为根的二分搜索树中值为 item 的节点
+    // 返回删除节点后新的二分搜索树的根
+    private _remove(node: BstNode<T>, item: T): BstNode<T> {
+        if (node === null) {
+            return null
+        }
+
+        if (item < node.val) {
+            node.left = this._remove(node.left, item)
+            return node
+        } else if (item > node.val) {
+            node.right = this._remove(node.right, item)
+            return node
+        } else {
+            if (node.left === null) {
+                let rightNode = node.right
+                node.right = null
+                this.size--
+                return rightNode
+            }
+            if (node.right === null) {
+                let leftNode = node.left
+                node.left = null
+                this.size--
+                return leftNode
+            }
+
+            // 待删除节点左右子树均不为空时
+            // 找到比待删除节点大的最小节点，即待删除节点右子树的最小节点
+            // 用这个节点替代待删除节点的位置
+            // 前驱 predecessor，后继 successor
+            let successor = this._minimum(node.right)
+            successor.right = this._removeMin(node.right)
+            successor.left = node.left
+
+            node.left = node.right = null
+
+            return successor
+        }
+    }
+
     toString() {
         let res = ''
         res = this.generateBSTString(this.root, 0, res)
@@ -349,4 +400,4 @@ function testRemoveMax() {
     }
     console.log('removeMax  test success')
 }
-testRemoveMax()
+// testRemoveMax()
