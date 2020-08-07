@@ -262,7 +262,7 @@ export default class BST<T> {
     }
 
     remove(item: T): void {
-        this._remove(this.root, item)
+        this.root = this._remove(this.root, item)
     }
 
     // 删除以 node 为根的二分搜索树中值为 item 的节点
@@ -339,16 +339,17 @@ export default class BST<T> {
 }
 
 let bst1 = new BST<number>()
-const nums1 = [5, 3, 6, 8, 4, 2]
+const nums1 = [5, 3, 6, 8, 4, 2, 7]
 for (let i = 0; i < nums1.length; i++) {
     bst1.add(nums1[i])
 }
+console.log(bst1.toString())
 // console.log('bst1.minimum', bst1.minimum())
 
 // console.log(bst1)
 // console.log(bst1.contains(5))
 // console.log(bst1.contains(11))
-// bst1.preOrder()
+bst1.preOrder()
 // console.log('toString\n', bst1.toString())
 // bst1.inOrder()
 // bst1.postOrder()
