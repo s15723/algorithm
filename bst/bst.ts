@@ -1,6 +1,6 @@
 /**
  * 完整版二分搜索树
- * 
+ *
  * 包含功能
  * 1.添加 2.查询 3.前中后序遍历 4.层序遍历 5.删除最大最小元素 6.删除任意元素
  * 7. rank(排第几) select(rank)找到排第rank的节点
@@ -9,7 +9,7 @@
 import BstNode from './BstNode'
 
 class PerfectBST<T> {
-    private root: BstNode<T> = null;
+    private root: BstNode<T> = null
 
     getSize() {
         return this.root.size
@@ -174,7 +174,6 @@ class PerfectBST<T> {
         return this._maximum(node.right)
     }
 
-
     removeMin(): T {
         let ret = this.minimum()
         this.root = this._removeMin(this.root)
@@ -226,7 +225,8 @@ class PerfectBST<T> {
         } else if (item > node.val) {
             node.right = this._remove(node.right, item)
             return node
-        } else { // item === node.val
+        } else {
+            // item === node.val
             if (node.left === null) {
                 let rightNode = node.right
                 node.right = null
@@ -249,47 +249,42 @@ class PerfectBST<T> {
     }
 
     rank(item: T): number {
-        let num = this._rank(this.root, item)
-        if (num === -Infinity) {
-            throw new Error(`${item} is not existed`)
-        }
         return this._rank(this.root, item)
     }
 
-    // 在以 node 为根的二分搜索树，计算 item 的 rank
-    _rank(node: BstNode<T>, item: T): number {
+    // 在以 node 为根的二分搜索树中，返回 item 的序号
+    private _rank(node: BstNode<T>, item: T): number {
         if (node === null) {
-            return -Infinity
+            throw new Error(`${item} is not existed!`)
         }
 
-        let leftSize = node.left !== null ? node.left.size : 0
+        let leftSize = node.left ? node.left.size : 0
         if (item === node.val) {
             return leftSize + 1
         } else if (item < node.val) {
             return this._rank(node.left, item)
         } else {
-            return leftSize + 1 + this._rank(node.right, item)
+            return this._rank(node.right, item) + leftSize + 1
         }
-
     }
 
     select(rank: number): T {
-        return this._select(this.root, rank).val
+        if (rank <= 0 || rank >= this.root.size) {
+            throw new Error(`invalid rank ${rank}`)
+        }
+        return this._select(this.root, rank - 1).val
     }
 
-    // 在 node 中，找到索引为 index 的元素
-    _select(node: BstNode<T>, rank: number): BstNode<T> {
+    // 找到以 node 为根的二分搜索树中第 rank 个元素
+    private _select(node: BstNode<T>, rank: number): BstNode<T> {
         if (node === null) {
-            // 没找到返回 null
             return null
         }
 
-        let leftSize = node.left !== null ? node.left.size : 0
+        let leftSize = node.left ? node.left.size : 0
         if (rank < leftSize) {
-            // 向左递归，节点的值是越来越小的。rank 不需要变
             return this._select(node.left, rank)
         } else if (rank > leftSize) {
-            // 向右递归后，树只剩下右半部分，rank需要从右子树开始算，减去之前的父树 node(1) 和 node.left.size
             return this._select(node.right, rank - leftSize - 1)
         } else {
             return node
@@ -301,17 +296,15 @@ class PerfectBST<T> {
         return res
     }
 
-    generateBSTString(
-        node: BstNode<T>,
-        depth: number,
-        res: string
-    ): string {
+    generateBSTString(node: BstNode<T>, depth: number, res: string): string {
         if (node === null) {
             res += `${this.generateDepthString(depth)}null\n`
             return res
         }
 
-        res += `${this.generateDepthString(depth)}val:${node.val}, size:${node.size}\n`
+        res += `${this.generateDepthString(depth)}val:${node.val}, size:${
+            node.size
+        }\n`
         res = this.generateBSTString(node.left, depth + 1, res)
         res = this.generateBSTString(node.right, depth + 1, res)
 
@@ -390,8 +383,8 @@ function testRankSelect() {
     for (let i = 0; i < nums1.length; i++) {
         bst.add(nums1[i])
     }
-    console.log(bst.rank(6))
-    // console.log(bst.select(3))
+    // console.log(bst.rank(3))
+    // console.log(bst.select(2))
     return bst.toString()
 }
 
