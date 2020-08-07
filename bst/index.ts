@@ -1,8 +1,11 @@
 /**
- * 前、中、后序遍历都是深度优先遍历
+ * 前、中、后序遍历都是深度优先遍历，先顾及左子树
+ *
+ * 层序遍历，广度优先遍历
  */
 import BstNode from './BstNode'
 import LinkedListStack from '../stack/linkedListStack'
+import LinkedListQueue from '../queue/linkedListQueue'
 
 export default class BST<T> {
     private root: BstNode<T> = null
@@ -93,6 +96,21 @@ export default class BST<T> {
         }
     }
 
+    preOrderNRWithArray() {
+        const stack = Array<BstNode<T>>()
+        stack.push(this.root)
+        while (stack.length) {
+            const cur = stack.pop()
+            console.log(cur.val)
+            if (cur.right !== null) {
+                stack.push(cur.right)
+            }
+            if (cur.left !== null) {
+                stack.push(cur.left)
+            }
+        }
+    }
+
     // 中序遍历
     inOrder() {
         this._inOrder(this.root)
@@ -120,6 +138,117 @@ export default class BST<T> {
         this._postOrder(node.left)
         this._postOrder(node.right)
         console.log(node.val)
+    }
+
+    // 二分搜索树的层序遍历
+    levelOrder() {
+        let queue = new LinkedListQueue<BstNode<T>>()
+        queue.enqueue(this.root)
+
+        while (!queue.isEmpty()) {
+            const cur = queue.dequeue()
+            console.log(cur.val)
+            if (cur.left !== null) {
+                queue.enqueue(cur.left)
+            }
+            if (cur.right !== null) {
+                queue.enqueue(cur.right)
+            }
+        }
+    }
+
+    // 用数组模拟队列实现层序遍历
+    levelOrderWithArray() {
+        const queue = Array<BstNode<T>>()
+        queue.push(this.root)
+
+        while (queue.length) {
+            const cur = queue.shift()
+            console.log(cur.val)
+
+            if (cur.left !== null) {
+                queue.push(cur.left)
+            }
+            if (cur.right !== null) {
+                queue.push(cur.right)
+            }
+        }
+    }
+
+    minimum(): T {
+        if (this.size === 0) {
+            throw new Error('BST is empty!')
+        }
+        // 非递归
+        let cur = this.root
+        while (cur.left !== null) {
+            cur = cur.left
+        }
+        return cur.val
+
+        // 递归
+        return this._minimum(this.root).val
+    }
+
+    // 寻找二分搜索树的最小元素
+    // 在这里递归写法比较麻烦
+    private _minimum(node: BstNode<T>): BstNode<T> {
+        if (node.left === null) {
+            return node
+        }
+        return this._minimum(node.left)
+    }
+
+    maximum(): T {
+        if (this.size === 0) {
+            throw new Error('BST is empty!')
+        }
+        return this._maximum(this.root).val
+    }
+
+    private _maximum(node: BstNode<T>): BstNode<T> {
+        if (node.right === null) {
+            return node
+        }
+        return this._maximum(node.right)
+    }
+
+    removeMin(): T {
+        let ret = this.minimum()
+        this.root = this._removeMin(this.root)
+        return ret
+    }
+
+    // 删除以node为根的二分搜索树中的最小节点
+    // 返回删除节点后新的二分搜索树的根
+    private _removeMin(node: BstNode<T>): BstNode<T> {
+        if (node.left === null) {
+            let rightNode = node.right
+            node.right = null
+            this.size--
+            return rightNode
+        }
+
+        node.left = this._removeMin(node.left)
+        return node
+    }
+
+    removeMax(): T {
+        let ret = this.maximum()
+        this.root = this._removeMax(this.root)
+        return ret
+    }
+
+    private _removeMax(node: BstNode<T>): BstNode<T> {
+        if (node.right === null) {
+            let leftNode = node.left
+            node.left = null
+            this.size--
+            return leftNode
+        }
+
+        node.right = this._removeMax(node.right)
+        return node
     }
 
     toString() {
@@ -159,6 +288,7 @@ const nums1 = [5, 3, 6, 8, 4, 2]
 for (let i = 0; i < nums1.length; i++) {
     bst1.add(nums1[i])
 }
+// console.log('bst1.minimum', bst1.minimum())
 
 // console.log(bst1)
 // console.log(bst1.contains(5))
@@ -174,7 +304,49 @@ for (let i = 0; i < nums2.length; i++) {
     bst2.add(nums2[i])
 }
 // console.log('toString\n', bst2.toString())
-bst2.preOrder()
+// bst2.preOrder()
 // bst2.inOrder()
 // bst2.postOrder()
-bst2.preOrderNR()
+// bst2.preOrderNR()
+// bst2.preOrderNRWithArray()
+// bst2.levelOrder()
+// bst2.levelOrderWithArray()
+// console.log('bst2.minimum', bst2.minimum())
+
+function testRemoveMin() {
+    let bst3 = new BST<number>()
+    for (let i = 0; i < 1000; i++) {
+        bst3.add(Math.random() * 1000)
+    }
+    let arr = []
+    while (!bst3.isEmpty()) {
+        arr.push(bst3.removeMin())
+    }
+    console.log(arr)
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i - 1] > arr[i]) {
+            throw new Error('test failed')
+        }
+    }
+    console.log('removeMin test success')
+}
+// testRemoveMin()
+
+function testRemoveMax() {
+    let bst4 = new BST<number>()
+    for (let i = 0; i < 1000; i++) {
+        bst4.add(Math.random() * 1000)
+    }
+    let arr = []
+    while (!bst4.isEmpty()) {
+        arr.push(bst4.removeMax())
+    }
+    console.log(arr)
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i - 1] < arr[i]) {
+            throw new Error('test failed')
+        }
+    }
+    console.log('removeMax  test success')
+}
+testRemoveMax()
