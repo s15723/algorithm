@@ -4,7 +4,7 @@
  * 包含功能
  * 1.添加 2.查询 3.前中后序遍历 4.层序遍历 5.删除最大最小元素 6.删除任意元素
  * 7. rank(排第几) select(rank)找到排第rank的节点
- * 8. floor、ceil，参数并不一定要在 bst 中
+ * 8. floor、ceil，参数并不一定要在 bst 中(待实现)
  */
 import BstNode from './BstNode'
 
