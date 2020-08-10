@@ -7,8 +7,10 @@
  * 8. floor、ceil，参数并不一定要在 bst 中(待实现)
  */
 import BstNode from './BstNode'
+import deepEqual from '../array/deepEqual'
+import deepMerge from './deepMerge'
 
-class PerfectBST<T> {
+export default class PerfectBST<T> {
     private root: BstNode<T> = null
 
     getSize() {
@@ -28,14 +30,22 @@ class PerfectBST<T> {
             return new BstNode(item)
         }
 
+        const prev = deepMerge(node)
+
         if (item < node.val) {
             node.left = this._add(node.left, item)
         } else if (item > node.val) {
             node.right = this._add(node.right, item)
         }
+
+        const cur = node
+
         // 每次添加一个节点，每一层递归的 node.size 都要 + 1
         // 而 node.size 初始值为 1，所以终止条件处不需要对 size 做任何操作
-        node.size++
+        // 记住，只有添加成功了 size 才会 +1！，添加重复元素 size 是不会变的
+        if (!deepEqual(prev, cur)) {
+            node.size++
+        }
 
         return node
     }
@@ -218,15 +228,12 @@ class PerfectBST<T> {
         if (node === null) {
             return null
         }
-        node.size--
-        if (item < node.val) {
-            node.left = this._remove(node.left, item)
-            return node
-        } else if (item > node.val) {
-            node.right = this._remove(node.right, item)
-            return node
-        } else {
-            // item === node.val
+
+        const prev = deepMerge(node)
+
+        // 找到了要删除的节点
+        // 不需要处理删除节点的 size
+        if (item === node.val) {
             if (node.left === null) {
                 let rightNode = node.right
                 node.right = null
@@ -246,6 +253,19 @@ class PerfectBST<T> {
 
             return predecessor
         }
+
+        // 没找到要删除的节点，继续递归
+        // 当删除成功的时候，即 deepEqual(prev, cur) 为 false 时，node.size--
+        if (item < node.val) {
+            node.left = this._remove(node.left, item)
+        } else if (item > node.val) {
+            node.right = this._remove(node.right, item)
+        }
+        const cur = node
+        if (!deepEqual(prev, cur)) {
+            node.size--
+        }
+        return node
     }
 
     rank(item: T): number {
@@ -296,7 +316,7 @@ class PerfectBST<T> {
         return res
     }
 
-    generateBSTString(node: BstNode<T>, depth: number, res: string): string {
+    private generateBSTString(node: BstNode<T>, depth: number, res: string): string {
         if (node === null) {
             res += `${this.generateDepthString(depth)}null\n`
             return res
@@ -304,14 +324,14 @@ class PerfectBST<T> {
 
         res += `${this.generateDepthString(depth)}val:${node.val}, size:${
             node.size
-        }\n`
+            }\n`
         res = this.generateBSTString(node.left, depth + 1, res)
         res = this.generateBSTString(node.right, depth + 1, res)
 
         return res
     }
 
-    generateDepthString(depth: number) {
+    private generateDepthString(depth: number) {
         let res = ''
         for (let i = 0; i < depth; i++) {
             res += '--'
@@ -322,7 +342,7 @@ class PerfectBST<T> {
 
 function testAdd() {
     let bst = new PerfectBST<number>()
-    const nums1 = [5, 3, 6, 8, 4, 2]
+    const nums1 = [5, 3, 6, 8, 4, 2, 2, 2, 3, 3, 6, 8, 4]
 
     for (let i = 0; i < nums1.length; i++) {
         bst.add(nums1[i])
@@ -368,8 +388,9 @@ function testRemove() {
     }
     // console.log(bst.maximum())
     // console.log(bst.minimum())
-    // bst.removeMin()
-    // bst.removeMax()
+    bst.removeMin()
+    bst.removeMax()
+    bst.remove(6)
     bst.remove(6)
     return bst.toString()
 }
@@ -388,4 +409,4 @@ function testRankSelect() {
     return bst.toString()
 }
 
-testRankSelect()
+// testRankSelect()

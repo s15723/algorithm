@@ -82,7 +82,11 @@ export default class LinkedList<T> {
     contains(item: T) {
         let cur = this.dummyHead.next
         while (cur !== null) {
-            if (deepEqual(cur.data, item)) {
+            const allObject = isObject(item) && isObject(cur.data)
+            if (
+                (allObject && deepEqual(cur.data, item)) ||
+                (!allObject && cur.data === item)
+            ) {
                 return true
             }
             cur = cur.next
@@ -119,14 +123,12 @@ export default class LinkedList<T> {
         let prev = this.dummyHead
 
         while (prev.next !== null) {
-            if (isObject(prev.next.data) && isObject(item)) {
-                if (deepEqual(prev.next.data, item)) {
-                    break
-                }
-            } else {
-                if (prev.next.data === item) {
-                    break
-                }
+            const allObject = isObject(prev.next.data) && isObject(item)
+            if (
+                (allObject && deepEqual(prev.next.data, item)) ||
+                (!allObject && prev.next.data === item)
+            ) {
+                break
             }
             prev = prev.next
         }

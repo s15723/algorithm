@@ -3,6 +3,9 @@ export const isObject = (obj: any): boolean => {
 }
 
 export default function deepEqual(obj1: any, obj2: any): boolean {
+    obj1 = obj1 || {}
+    obj2 = obj2 || {}
+
     const keys1 = Object.keys(obj1)
     const keys2 = Object.keys(obj2)
 
@@ -35,9 +38,9 @@ const hero1 = {
 const hero2 = {
     name: 'Batman',
     address: {
-        city: 'Gotham1',
+        city: 'Gotham',
     },
 }
 
-console.log(hero1 == hero2)
-console.log(deepEqual(hero1, hero2))
+// console.log(hero1 == hero2)
+// console.log(deepEqual(hero1, hero2))
