@@ -5,18 +5,27 @@
  * 1.添加 2.查询 3.前中后序遍历 4.层序遍历 5.删除最大最小元素 6.删除任意元素
  * 7. rank(排第几) select(rank)找到排第rank的节点
  * 8. floor、ceil，参数并不一定要在 bst 中(待实现)
+ * 
+ * 注意！因为这个版本的二分搜索树需要维护 node.size
+ * 每次添加/删除操作都会深比较(deepEqual)操作前后的 node 来判断是否添加/删除成功
+ * 这个操作需要花费很长很长时间，貌似这种实现方式不妥
+ * 
+ * 已解决上述问题
+ * 通过比较添加/删除前后子树的 size 有没有变化来判断是否添加/删除成功
+ * 但解决方案导致代码多了很多
+ * 待寻找更合适的方式，其实应该可以用双向链表来减少一个 if 判断，就先不做了
  */
 import BstNode from './BstNode'
-import deepEqual from '../array/deepEqual'
-import deepMerge from './deepMerge'
 
 export default class PerfectBST<T> {
     private root: BstNode<T> = null
 
+    // O(1)
     getSize() {
         return this.root.size
     }
 
+    // O(1)
     isEmpty() {
         return this.root === null
     }
@@ -25,26 +34,38 @@ export default class PerfectBST<T> {
         this.root = this._add(this.root, item)
     }
 
+    // h = log2 (n+1)
+    // O(h) ==> O(logn)
     private _add(node: BstNode<T>, item: T): BstNode<T> {
         if (node === null) {
             return new BstNode(item)
         }
 
-        const prev = deepMerge(node)
-
+        // 这块逻辑待用双向链表来优化
         if (item < node.val) {
-            node.left = this._add(node.left, item)
+            if (node.left === null) {
+                node.size++
+                node.left = this._add(node.left, item)
+            } else {
+                const prevSize = node.left.size
+                node.left = this._add(node.left, item)
+                const curSize = node.left.size
+                if (prevSize < curSize) {
+                    node.size++
+                }
+            }
         } else if (item > node.val) {
-            node.right = this._add(node.right, item)
-        }
-
-        const cur = node
-
-        // 每次添加一个节点，每一层递归的 node.size 都要 + 1
-        // 而 node.size 初始值为 1，所以终止条件处不需要对 size 做任何操作
-        // 记住，只有添加成功了 size 才会 +1！，添加重复元素 size 是不会变的
-        if (!deepEqual(prev, cur)) {
-            node.size++
+            if (node.right === null) {
+                node.size++
+                node.right = this._add(node.right, item)
+            } else {
+                const prevSize = node.right.size
+                node.right = this._add(node.right, item)
+                const curSize = node.right.size
+                if (prevSize < curSize) {
+                    node.size++
+                }
+            }
         }
 
         return node
@@ -54,6 +75,7 @@ export default class PerfectBST<T> {
         return this._contains(this.root, item)
     }
 
+    // O(logn)
     private _contains(node: BstNode<T>, item: T): boolean {
         if (node === null) {
             return false
@@ -224,12 +246,11 @@ export default class PerfectBST<T> {
         this.root = this._remove(this.root, item)
     }
 
+    // O(logn)
     _remove(node: BstNode<T>, item: T): BstNode<T> {
         if (node === null) {
             return null
         }
-
-        const prev = deepMerge(node)
 
         // 找到了要删除的节点
         // 不需要处理删除节点的 size
@@ -255,16 +276,41 @@ export default class PerfectBST<T> {
         }
 
         // 没找到要删除的节点，继续递归
-        // 当删除成功的时候，即 deepEqual(prev, cur) 为 false 时，node.size--
         if (item < node.val) {
-            node.left = this._remove(node.left, item)
+            // node.left === null 说明没找到啊，啥都不做
+            if (node.left !== null) {
+                if (item === node.left.val) {
+                    node.left = this._remove(node.left, item)
+                    node.size--
+                } else {
+                    const prev = node.left.size
+                    node.left = this._remove(node.left, item)
+                    const cur = node.left.size
+                    if (prev > cur) {
+                        node.size--
+                    }
+                }
+            } else {
+                console.log(`${item} is not exist in the bst`)
+            }
         } else if (item > node.val) {
-            node.right = this._remove(node.right, item)
+            if (node.right !== null) {
+                if (item === node.right.val) {
+                    node.right = this._remove(node.right, item)
+                    node.size--
+                } else {
+                    const prev = node.right.size
+                    node.right = this._remove(node.right, item)
+                    const cur = node.right.size
+                    if (prev > cur) {
+                        node.size--
+                    }
+                }
+            } else {
+                console.log(`${item} is not exist in the bst`)
+            }
         }
-        const cur = node
-        if (!deepEqual(prev, cur)) {
-            node.size--
-        }
+
         return node
     }
 
@@ -392,10 +438,11 @@ function testRemove() {
     bst.removeMax()
     bst.remove(6)
     bst.remove(6)
+    bst.remove(10)
     return bst.toString()
 }
 
-// console.log(testRemove())
+console.log(testRemove())
 
 function testRankSelect() {
     let bst = new PerfectBST<number>()
