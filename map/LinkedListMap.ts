@@ -113,6 +113,8 @@ function testLinkedListMap() {
     })
     console.log(map.getSize())
     console.log(map.get(8))
+    map.remove(8)
+    console.log(map.get(8))
     return map
 }
 
