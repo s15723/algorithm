@@ -249,6 +249,7 @@ export default class PerfectBST<T> {
     // O(logn)
     _remove(node: BstNode<T>, item: T): BstNode<T> {
         if (node === null) {
+            console.log('_remove null')
             return null
         }
 

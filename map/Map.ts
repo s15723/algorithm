@@ -7,7 +7,7 @@ export interface Map<K, V> {
 
     get(key: K): V
 
-    set(key: K, val: V): void
+    set(key: K, newVal: V): void
 
     getSize(): number
 
