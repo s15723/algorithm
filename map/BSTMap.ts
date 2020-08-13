@@ -12,6 +12,7 @@ class BSTNode<K, V> {
     }
 }
 
+// O(h) ==> O(logn)
 export default class BSTMap<K, V> implements Map<K, V> {
     private root: BSTNode<K, V> = null
     private size = 0

@@ -16,6 +16,7 @@ class LinkedNode<K, V> {
     }
 }
 
+// O(n)
 export default class LinkedListMap<K, V> implements Map<K, V> {
     private dummyHead: LinkedNode<K, V> = new LinkedNode()
     private size = 0
