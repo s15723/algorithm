@@ -443,7 +443,7 @@ function testRemove() {
     return bst.toString()
 }
 
-console.log(testRemove())
+// console.log(testRemove())
 
 function testRankSelect() {
     let bst = new PerfectBST<number>()

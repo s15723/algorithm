@@ -20,7 +20,7 @@ function testQueue(queue: Queue<number>, opCount: number) {
 }
 
 function test() {
-    let opCount = 100000
+    let opCount = 10000
 
     let arrayQueue = new ArrayQueue<number>()
     let time1 = testQueue(arrayQueue, opCount)

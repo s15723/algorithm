@@ -82,7 +82,7 @@ export default class BST<T> {
             return
         }
 
-        console.log(node.val)
+        console.log('preOrder', node.val)
         this._preOrder(node.left)
         this._preOrder(node.right)
     }
@@ -360,7 +360,7 @@ for (let i = 0; i < nums2.length; i++) {
     bst2.add(nums2[i])
 }
 // console.log('toString\n', bst2.toString())
-// bst2.preOrder()
+bst2.preOrder()
 // bst2.inOrder()
 // bst2.postOrder()
 // bst2.preOrderNR()
