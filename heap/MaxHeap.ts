@@ -57,6 +57,8 @@ class MaxHeap<T> {
     }
 
     // 向堆中添加元素
+    // O(h) ==> O(logn)
+    // 最差就是 O(logn)，因为堆是一种完全二叉树，不会出现二分搜索树退化成链表那种极端情况
     add(item: T): void {
         this.data.push(item)
         this.siftUp(this.data.length - 1)
@@ -71,6 +73,7 @@ class MaxHeap<T> {
     }
 
     // 看堆中的最大元素
+    // O(h) ==> O(logn)
     findMax(): T {
         if (this.data.length === 0) {
             throw new Error('Can not findMax when heap is empty.')
