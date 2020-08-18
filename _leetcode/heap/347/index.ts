@@ -52,7 +52,6 @@ function topKFrequent(nums: number[], k: number) {
         }
     }
 
-
     Array.from(map.keys()).forEach((val, idx) => {
         if (idx < k) {
             heap.push(val)
