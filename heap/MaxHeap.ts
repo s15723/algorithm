@@ -18,7 +18,7 @@
  *
  * sift down 堆中元素的下沉过程
  */
-class MaxHeap<T> {
+export default class MaxHeap<T> {
     private data: Array<T> = []
 
     // 将任意数组整理成堆的形状
@@ -76,6 +76,7 @@ class MaxHeap<T> {
         this.siftUp(this.data.length - 1)
     }
 
+    // O(h)
     private siftUp(k: number): void {
         while (k > 0 && this.data[k] > this.data[this.parent(k)]) {
             this.swap(k, this.parent(k))
@@ -102,6 +103,7 @@ class MaxHeap<T> {
         return ret
     }
 
+    // O(h)
     private siftDown(k: number): void {
         while (this.leftChild(k) < this.data.length) {
             // data[j] 是 leftChild 和 rightChild 中的最大值
@@ -121,6 +123,7 @@ class MaxHeap<T> {
     }
 
     // 取出堆中的最大元素，并替换成元素 item
+    // O(h)
     replace(item: T): T {
         const ret = this.findMax()
         this.data[0] = item
@@ -174,7 +177,7 @@ function testHeapify(testData: number[], isHeapify: boolean) {
     }
 
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i-1] < arr[i]) {
+        if (arr[i - 1] < arr[i]) {
             throw new Error('error')
         }
     }
@@ -189,10 +192,10 @@ function testHeapify(testData: number[], isHeapify: boolean) {
 function test() {
     const n = 1000000
     const testData1 = []
-    for (let i = 0; i < n;i++) {
+    for (let i = 0; i < n; i++) {
         testData1.push(i)
     }
-    const testData2 = testData1.slice() 
+    const testData2 = testData1.slice()
 
     const time1 = testHeapify(testData1, true)
     const time2 = testHeapify(testData2, false)
