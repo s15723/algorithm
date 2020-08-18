@@ -1,25 +1,37 @@
-/** 
+/**
  * 二叉堆
- * 1.是完全二叉树
+ * 1.是完全二叉树，所以时间发咋读为 O(h)，不会出现极端情况退化成链表 O(n)
  * 2.堆中某个节点的值总是不大于其父节点的值(最大堆)，也有最小堆
  * 3.节点的大小和节点所处的层次没有必然联系
- * 
+ *
  * 以 index = 1 开头
- * parent(i) = i / 2 
+ * parent(i) = i / 2
  * left child(i) = 2 * i
  * right child(i) = 2 * i + 1
- * 
+ *
  * 以 index = 0 开头
  * parent(i) = Math.floor((i-1) / 2)
  * left child(i) = 2 * i + 1
  * right child(i) = 2 * i + 2
- * 
+ *
  * sift up 堆中元素的上浮过程
- * 
+ *
  * sift down 堆中元素的下沉过程
-*/
+ */
 class MaxHeap<T> {
     private data: Array<T> = []
+
+    // 将任意数组整理成堆的形状
+    // O(n)，这种方法不用操作叶子节点，少操作几乎一半的节点
+    // 如果是遍历数组 add 到堆中，时间复杂度为 O(nlogn) > O(n)
+    constructor(arr: T[] = []) {
+        this.data = arr
+        if (arr.length > 1) {
+            for (let i = this.parent(arr.length - 1); i >= 0; i--) {
+                this.siftDown(i)
+            }
+        }
+    }
 
     size() {
         return this.data.length
@@ -73,7 +85,6 @@ class MaxHeap<T> {
     }
 
     // 看堆中的最大元素
-    // O(h) ==> O(logn)
     findMax(): T {
         if (this.data.length === 0) {
             throw new Error('Can not findMax when heap is empty.')
@@ -81,6 +92,7 @@ class MaxHeap<T> {
         return this.data[0]
     }
 
+    // O(h) ==> O(logn)
     extractMax(): T {
         const ret = this.findMax()
         this.swap(0, this.data.length - 1)
@@ -92,12 +104,10 @@ class MaxHeap<T> {
 
     private siftDown(k: number): void {
         while (this.leftChild(k) < this.data.length) {
+            // data[j] 是 leftChild 和 rightChild 中的最大值
             let j = this.leftChild(k)
 
-            if (
-                (j + 1 < this.data.length) &&
-                (this.data[j] < this.data[j + 1])
-            ) {
+            if (j + 1 < this.data.length && this.data[j] < this.data[j + 1]) {
                 j++
             }
 
@@ -108,6 +118,15 @@ class MaxHeap<T> {
             this.swap(k, j)
             k = j
         }
+    }
+
+    // 取出堆中的最大元素，并替换成元素 item
+    replace(item: T): T {
+        const ret = this.findMax()
+        this.data[0] = item
+        this.siftDown(0)
+
+        return ret
     }
 }
 
@@ -133,4 +152,53 @@ function testMaxHeap() {
     console.log('Test MaxHeap completed.')
 }
 
-testMaxHeap()
+// testMaxHeap()
+
+function testHeapify(testData: number[], isHeapify: boolean) {
+    const startTime = Date.now()
+
+    let maxHeap: MaxHeap<number>
+
+    if (isHeapify) {
+        maxHeap = new MaxHeap(testData)
+    } else {
+        maxHeap = new MaxHeap()
+        for (let i = 0; i < testData.length; i++) {
+            maxHeap.add(testData[i])
+        }
+    }
+
+    let arr = []
+    for (let i = 0; i < testData.length; i++) {
+        arr[i] = maxHeap.extractMax()
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i-1] < arr[i]) {
+            throw new Error('error')
+        }
+    }
+
+    console.log('Test MaxHeap completed.')
+
+    const endTime = Date.now()
+
+    return endTime - startTime
+}
+
+function test() {
+    const n = 1000000
+    const testData1 = []
+    for (let i = 0; i < n;i++) {
+        testData1.push(i)
+    }
+    const testData2 = testData1.slice() 
+
+    const time1 = testHeapify(testData1, true)
+    const time2 = testHeapify(testData2, false)
+
+    console.log('withHeapify', time1)
+    console.log('withoutHeapify', time2)
+}
+
+test()
