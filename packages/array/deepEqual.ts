@@ -42,5 +42,5 @@ const hero2 = {
     },
 }
 
-// console.log(hero1 == hero2)
-// console.log(deepEqual(hero1, hero2))
+console.log(hero1 == hero2)
+console.log(deepEqual(hero1, hero2))
