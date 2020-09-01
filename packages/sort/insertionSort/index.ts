@@ -27,6 +27,7 @@ export default function insertionSort<T>(arr: T[]) {
     for (let i = 1; i < length; i++) {
         let e = arr[i]
         let j: number
+        // arr[0, j-1] 是有序的，剩下的是无序的，往这里面插
         for (j = i; j > 0 && arr[j - 1] > e; j--) {
             arr[j - 1] = arr[j]
         }
@@ -44,4 +45,4 @@ function testInsertionSort() {
     testSort('insertionSort', insertionSort, arr3)
 }
 
-testInsertionSort()
+// testInsertionSort()

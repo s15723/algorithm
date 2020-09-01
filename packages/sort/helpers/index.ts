@@ -63,7 +63,7 @@ export function testSort<T>(
     const endTime = Date.now()
 
     if (!isSorted(arr)) {
-        throw new Error('排序算法写错了')
+        throw new Error(`${sortName}写错了`)
     }
 
     console.log(`${sortName}: ${(endTime - startTime) / 1000}`)
