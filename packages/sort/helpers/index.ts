@@ -6,7 +6,7 @@ export function generateRandomArray(n: number, rangeL: number, rangeR: number) {
         throw new Error('rangeL must less than rangeR')
     }
 
-    let arr: number[] = []
+    const arr: number[] = []
 
     for (let i = 0; i < n; i++) {
         arr[i] = Math.floor(Math.random() * (rangeR - rangeL + 1) + rangeL)
@@ -21,8 +21,8 @@ export function generateNearlyOrderedArray(n: number, swapTimes: number) {
         arr[i] = i
     }
     for (let i = 0; i < swapTimes; i++) {
-        let a = Math.floor(Math.random() * n)
-        let b = Math.floor(Math.random() * n)
+        const a = Math.floor(Math.random() * n)
+        const b = Math.floor(Math.random() * n)
         swap(arr, a, b)
     }
 
@@ -66,5 +66,5 @@ export function testSort<T>(
         throw new Error(`${sortName}写错了`)
     }
 
-    console.log(`${sortName}: ${(endTime - startTime) / 1000}`)
+    console.log(`${sortName}: ${(endTime - startTime) / 1000}s`)
 }
