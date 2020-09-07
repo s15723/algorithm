@@ -30,8 +30,8 @@ function partition<T>(arr: T[], left: number, right: number): number {
     let j = left
     for (let i = left + 1; i <= right; i++) {
         if (arr[i] < v) {
+            swap(arr, j + 1, i)
             j++
-            swap(arr, j, i)
         }
     }
 
@@ -41,6 +41,7 @@ function partition<T>(arr: T[], left: number, right: number): number {
 }
 
 function swap<T>(arr: T[], i: number, j: number) {
+    if (i === j) return
     const tmp = arr[i]
     arr[i] = arr[j]
     arr[j] = tmp
