@@ -3,6 +3,7 @@ import selectionSort from './selectionSort'
 import insertionSort from './insertionSort'
 import { bubbleSort, bubbleSort2 } from './bubbleSort'
 import shellSort from './shellSort'
+import quickSort from './quickSort'
 
 function test() {
     let N = 20000
@@ -18,11 +19,13 @@ function test() {
     let arr3 = arr1.slice()
     let arr4 = arr1.slice()
     let arr5 = arr1.slice()
+    let arr6 = arr1.slice()
     testSort('选择排序', selectionSort, arr1)
     testSort('插入排序', insertionSort, arr2)
     testSort('冒泡排序', bubbleSort, arr3)
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
+    testSort('快速排序第一版', quickSort, arr6)
 
     // 测试2 测试近乎有序的数组
     let swapTimes = 100
@@ -32,11 +35,13 @@ function test() {
     arr3 = arr1.slice()
     arr4 = arr1.slice()
     arr5 = arr1.slice()
+    arr6 = arr1.slice()
     testSort('选择排序', selectionSort, arr1)
     testSort('插入排序', insertionSort, arr2)
     testSort('冒泡排序', bubbleSort, arr3)
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
+    testSort('快速排序第一版', quickSort, arr6)
 
     // 测试3 测试完全有序的数组
     // 插入排序，冒泡排序 O(n)
@@ -50,12 +55,14 @@ function test() {
     arr3 = arr1.slice()
     arr4 = arr1.slice()
     arr5 = arr1.slice()
+    arr6 = arr1.slice()
     // 选择排序太慢了，不测了
     // testSort('选择排序', selectionSort, arr1)
     testSort('插入排序', insertionSort, arr2)
     testSort('冒泡排序', bubbleSort, arr3)
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
+    testSort('快速排序第一版', quickSort, arr6)
 }
 
 test()
