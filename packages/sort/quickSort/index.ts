@@ -30,8 +30,9 @@ function partition<T>(arr: T[], left: number, right: number): number {
     let j = left
     for (let i = left + 1; i <= right; i++) {
         if (arr[i] < v) {
-            swap(arr, j + 1, i)
-            j++
+            // swap(arr, j + 1, i)
+            // j++
+            swap(arr, ++j, i)
         }
     }
 
