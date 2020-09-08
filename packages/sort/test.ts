@@ -4,6 +4,7 @@ import insertionSort from './insertionSort'
 import { bubbleSort, bubbleSort2 } from './bubbleSort'
 import shellSort from './shellSort'
 import mergeSort from './mergeSort/mergeSort'
+import quickSort from './quickSort'
 
 function test() {
     let N = 20000
@@ -26,6 +27,7 @@ function test() {
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
     testSort('归并排序', mergeSort, arr6)
+    testSort('快速排序第一版', quickSort, arr6)
 
     // 测试2 测试近乎有序的数组
     let swapTimes = 100
@@ -43,6 +45,7 @@ function test() {
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
     testSort('归并排序', mergeSort, arr6)
+    testSort('快速排序第一版', quickSort, arr6)
 
     // 测试3 测试完全有序的数组
     // 插入排序，冒泡排序 O(n)
@@ -64,6 +67,7 @@ function test() {
     testSort('冒泡排序2', bubbleSort2, arr4)
     testSort('希尔排序', shellSort, arr5)
     testSort('归并排序', mergeSort, arr6)
+    testSort('快速排序第一版', quickSort, arr6)
 }
 
 test()
