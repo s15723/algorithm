@@ -3,7 +3,7 @@ import selectionSort from './selectionSort'
 import insertionSort from './insertionSort'
 import { bubbleSort, bubbleSort2 } from './bubbleSort'
 import shellSort from './shellSort'
-import mergeSort from './mergeSort'
+import mergeSort from './mergeSort/mergeSort'
 
 function test() {
     let N = 20000

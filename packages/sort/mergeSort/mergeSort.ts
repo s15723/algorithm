@@ -1,6 +1,6 @@
 import insertionSort from '../insertionSort'
 /**
- * 归并排序 O(nlogn)
+ * 归并排序 O(nlogn)，自顶向下
  *
  * Memory n
  */
