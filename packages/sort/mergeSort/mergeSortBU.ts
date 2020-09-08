@@ -12,6 +12,8 @@ export default function mergeSortBU<T>(arr: T[]) {
 
     for (let size = 1; size <= n; size += size) {
         for (let i = 0; i < n - size; i += 2 * size) {
+            // 保证第二个数组的第一个元素 index < n
+            // i + size < n => i < n - size
             _merge(arr, i, i + size - 1, Math.min(i + 2 * size - 1, n - 1))
         }
     }

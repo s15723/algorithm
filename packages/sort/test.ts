@@ -4,7 +4,7 @@ import insertionSort from './insertionSort'
 import { bubbleSort, bubbleSort2 } from './bubbleSort'
 import shellSort from './shellSort'
 import mergeSort from './mergeSort/mergeSort'
-import quickSort from './quickSort'
+import quickSort from './quickSort/quickSort'
 
 function test() {
     let N = 20000
@@ -14,6 +14,8 @@ function test() {
     // 选择排序其次
     // 插入排序不需要 swap 第二
     // 希尔排序最快 O(n^(3/2))
+    // 归并排序 O(nlogn)
+    // 快速排序第一版 O(nlogn)
     console.log(`Test for random array, size = ${N},random range [0,${N}]`)
     let arr1 = generateRandomArray(N, 0, N)
     let arr2 = arr1.slice()
@@ -51,6 +53,8 @@ function test() {
     // 插入排序，冒泡排序 O(n)
     // 选择排序 O(n^2)
     // 希尔排序 O(n^(3/2))，相对较慢，因为不管有没有序，它总是得遍历到满足 h >= 1 的最小值
+    // 归并排序 O(nlogn)
+    // 快速排序第一版 期望 O(nlogn)，退化成 O(n^2) 概率极低
     swapTimes = 0
     N = 10000000
     console.log(`Test for ordered array, size = ${N}`)

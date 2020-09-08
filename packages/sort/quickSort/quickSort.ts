@@ -1,3 +1,4 @@
+import insertionSort from '../insertionSort'
 /**
  * 快速排序基础版 O(nlogn)
  *
@@ -13,7 +14,12 @@ export default function quickSort<T>(arr: T[]) {
 
 // 递归使用快速排序，对 arr[left,right] 范围进行排序
 function _quickSort<T>(arr: T[], left: number, right: number) {
-    if (left >= right) {
+    // if (left >= right) {
+    //     return
+    // }
+    // 优化 1，对于小规模数组, 使用插入排序
+    if (right - left <= 15) {
+        insertionSort(arr, left, right)
         return
     }
 
