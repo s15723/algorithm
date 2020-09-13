@@ -12,7 +12,7 @@ export function bubbleSort<T>(arr: T[]) {
 
     do {
         swapped = false
-        for (let i = 1; i < n; i++) {
+        for (let i = 1; i <= n; i++) {
             if (arr[i - 1] > arr[i]) {
                 swap(arr, i, i - 1)
                 swapped = true
@@ -30,7 +30,7 @@ export function bubbleSort2<T>(arr: T[]) {
 
     do {
         newn = 0
-        for (let i = 1; i < n; i++) {
+        for (let i = 1; i <= n; i++) {
             if (arr[i - 1] > arr[i]) {
                 swap(arr, i, i - 1)
                 newn = i

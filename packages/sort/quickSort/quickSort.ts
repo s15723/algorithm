@@ -1,9 +1,10 @@
+import insertionSort from '../insertionSort'
 /**
  * 快速排序基础版 O(nlogn)
  *
  * 对于近乎有序的数组, 快速排序算法退化成了O(n^2)级别的算法，会退化成一个长度为 n 的链表，每层处理 n 次
  * 可以通过 partition 里的优化 2 来解决，防止对于有序数组，一直取最左边的最小值导致树退化成链表
- * 
+ *
  */
 export default function quickSort<T>(arr: T[]) {
     const n = arr.length
@@ -13,7 +14,8 @@ export default function quickSort<T>(arr: T[]) {
 
 // 递归使用快速排序，对 arr[left,right] 范围进行排序
 function _quickSort<T>(arr: T[], left: number, right: number) {
-    if (left >= right) {
+    if (right - left <= 15) {
+        insertionSort(arr, left, right)
         return
     }
 
@@ -41,6 +43,8 @@ function partition<T>(arr: T[], left: number, right: number): number {
         }
     }
 
+    // 交换完后 arr[l...j-1] < v,arr[j,r] >= v
+    // 这也导致大量重复的元素都堆积在了一边数组，破坏了二叉树的平衡性
     swap(arr, left, j)
 
     return j
