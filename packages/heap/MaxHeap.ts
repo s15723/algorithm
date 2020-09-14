@@ -24,7 +24,10 @@ export default class MaxHeap<T> {
     // 将任意数组整理成堆的形状
     // O(n)，这种方法不用操作叶子节点，少操作几乎一半的节点
     // 如果是遍历数组 add 到堆中，时间复杂度为 O(nlogn) > O(n)
-    constructor(arr: T[] = []) { 
+
+    // 这样子会额外创造一个大小为 n 的空间(最大堆)
+    // 空间复杂度为 O(n)
+    constructor(arr: T[] = []) {
         this.data = arr
         if (arr.length > 1) {
             for (let i = this.parent(arr.length - 1); i >= 0; i--) {
@@ -67,7 +70,7 @@ export default class MaxHeap<T> {
         this.data[i] = this.data[j]
         this.data[j] = tmp
     }
- 
+
     // 向堆中添加元素
     // O(h) ==> O(logn)
     // 最差就是 O(logn)，因为堆是一种完全二叉树，不会出现二分搜索树退化成链表那种极端情况
@@ -78,7 +81,7 @@ export default class MaxHeap<T> {
 
     // O(h)
     private siftUp(k: number): void {
-        while (k > 0 && this.data[k] > this.data[this.parent(k)]) { 
+        while (k > 0 && this.data[k] > this.data[this.parent(k)]) {
             this.swap(k, this.parent(k))
 
             k = this.parent(k)
@@ -186,7 +189,7 @@ function testHeapify(testData: number[], isHeapify: boolean) {
 
     const endTime = Date.now()
 
-    return endTime - startTime
+    return `${(endTime - startTime) / 1000}s`
 }
 
 function test() {
