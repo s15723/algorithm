@@ -1,6 +1,6 @@
 /**
  * 二叉堆
- * 1.是完全二叉树，所以时间复杂度为 O(h)，不会出现极端情况退化成链表 O(n)
+ * 1.是完全二叉树(除了最后一层，其它层所有节点个数必须是最大值)，所以时间复杂度为 O(h)，不会出现极端情况退化成链表 O(n)
  * 2.堆中某个节点的值总是不大于其父节点的值(最大堆)，也有最小堆
  * 3.节点的大小和节点所处的层次没有必然联系
  *
@@ -24,7 +24,7 @@ export default class MaxHeap<T> {
     // 将任意数组整理成堆的形状
     // O(n)，这种方法不用操作叶子节点，少操作几乎一半的节点
     // 如果是遍历数组 add 到堆中，时间复杂度为 O(nlogn) > O(n)
-    constructor(arr: T[] = []) {
+    constructor(arr: T[] = []) { 
         this.data = arr
         if (arr.length > 1) {
             for (let i = this.parent(arr.length - 1); i >= 0; i--) {
@@ -67,7 +67,7 @@ export default class MaxHeap<T> {
         this.data[i] = this.data[j]
         this.data[j] = tmp
     }
-
+ 
     // 向堆中添加元素
     // O(h) ==> O(logn)
     // 最差就是 O(logn)，因为堆是一种完全二叉树，不会出现二分搜索树退化成链表那种极端情况
@@ -78,7 +78,7 @@ export default class MaxHeap<T> {
 
     // O(h)
     private siftUp(k: number): void {
-        while (k > 0 && this.data[k] > this.data[this.parent(k)]) {
+        while (k > 0 && this.data[k] > this.data[this.parent(k)]) { 
             this.swap(k, this.parent(k))
 
             k = this.parent(k)

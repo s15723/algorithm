@@ -29,6 +29,14 @@ export function generateNearlyOrderedArray(n: number, swapTimes: number) {
     return arr
 }
 
+export function generateOrderedArray(n: number) {
+    return generateNearlyOrderedArray(n, 0)
+}
+
+export function generateInversedArray(n: number) {
+    return generateOrderedArray(n).reverse()
+}
+
 export function printArray<T>(arr: T[]) {
     for (let i = 0; i < arr.length; i++) {
         console.log(arr[i])
