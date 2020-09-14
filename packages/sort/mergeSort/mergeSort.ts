@@ -46,7 +46,7 @@ function _merge<T>(arr: T[], left: number, middle: number, right: number) {
         } else if (j > right) {
             arr[k] = aux[i - left]
             i++
-        } else if (aux[i - left] < aux[j - left]) {
+        } else if (aux[i - left] <=  aux[j - left]) {
             arr[k] = aux[i - left]
             i++
         } else {
