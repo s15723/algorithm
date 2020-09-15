@@ -1,64 +1,61 @@
+/**
+ * 时间复杂度 O(nlogk) < O(nlogn)
+ */
 function topKFrequent(nums: number[], k: number) {
-    const map = new Map<number, number>()
+    const frequency = new Map<number, number>()
     const heap: number[] = []
 
+    // O(n)
     nums.forEach(num => {
-        if (map.has(num)) {
-            map.set(num, map.get(num)! + 1)
+        if (frequency.has(num)) {
+            frequency.set(num, frequency.get(num)! + 1)
         } else {
-            map.set(num, 1)
+            frequency.set(num, 1)
         }
     })
 
-    const leftChild = (k: number) => {
-        return 2 * k + 1
+    const parent = (k: number) => Math.floor((k - 1) / 2)
+
+    const leftChild = (k: number) => 2 * k + 1
+
+    // O(k)
+    const heapify = (arr: number[]) => {
+        const n = arr.length
+        for (let i = parent(n - 1); i >= 0; i--) {
+            siftDown(arr, i)
+        }
     }
 
-    const parent = (k: number) => {
-        return Math.floor((k - 1) / 2)
-    }
-
-    const swap = (arr: number[], i: number, j: number) => {
-        const tmp = arr[i]
-        arr[i] = arr[j]
-        arr[j] = tmp
-    }
-
+    // O(logk)
     const siftDown = (arr: number[], k: number) => {
-        while (leftChild(k) < arr.length) {
+        const n = arr.length
+        const e = arr[k]
+        while (leftChild(k) < n) {
             let j = leftChild(k)
 
-            if (
-                (j + 1 < arr.length) &&
-                (map.get(arr[j + 1])! < map.get(arr[j])!)
-            ) {
+            if (j + 1 < n && frequency.get(arr[j + 1])! < frequency.get(arr[j])!) {
                 j++
             }
 
-            if (map.get(arr[k])! < map.get(arr[j])!) {
+            if (frequency.get(e)! < frequency.get(arr[j])!) {
                 break
             }
 
-            swap(arr, k, j)
+            arr[k] = arr[j]
             k = j
         }
+
+        arr[k] = e
     }
 
-    const heapify = (arr: number[]) => {
-        if (arr.length > 1) {
-            for (let i = parent(arr.length - 1); i >= 0; i--) {
-                siftDown(arr, i)
-            }
-        }
-    }
-
-    Array.from(map.keys()).forEach((val, idx) => {
+    // O(nlogk)
+    Array.from(frequency.keys()).forEach((val, idx) => {
         if (idx < k) {
             heap.push(val)
             if (idx === k - 1) {
                 heapify(heap)
             }
-        } else if (map.get(val)! > map.get(heap[0])!) {
+        } else if (frequency.get(val)! > frequency.get(heap[0])!) {
             heap[0] = val
             siftDown(heap, 0)
         }
