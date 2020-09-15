@@ -1,5 +1,9 @@
 /**
  * 完整版二分搜索树
+ * 
+ * 优势
+ * 高效，不仅可以快速查找数据，还可以高效插入、删除 据 ==> 动态维护数据
+ * 如果一开始就拿到全部数据了，二分查找法查找数据即可
  *
  * 包含功能
  * 1.添加 2.查询 3.前中后序遍历 4.层序遍历 5.删除最大最小元素 6.删除任意元素
@@ -90,6 +94,7 @@ export default class PerfectBST<T> {
         }
     }
 
+    // O(n)
     preOrder() {
         this._preOrder(this.root)
     }
@@ -105,6 +110,7 @@ export default class PerfectBST<T> {
         this._preOrder(node.right)
     }
 
+    // O(n) 
     preOrderNR() {
         let stack: BstNode<T>[] = []
         stack.push(this.root)
@@ -121,6 +127,7 @@ export default class PerfectBST<T> {
         }
     }
 
+    // O(n)
     inOrder() {
         this._inOrder(this.root)
     }
@@ -136,6 +143,8 @@ export default class PerfectBST<T> {
         this._inOrder(node.right)
     }
 
+    // 释放操作，先释放左右子节点，再释放自身
+    // O(n)
     postOrder() {
         this._postOrder(this.root)
     }
@@ -150,6 +159,7 @@ export default class PerfectBST<T> {
         console.log(node.val)
     }
 
+    // O(n)
     levelOrder() {
         let queue: BstNode<T>[] = []
         queue.push(this.root)
@@ -231,6 +241,7 @@ export default class PerfectBST<T> {
     }
 
     private _removeMax(node: BstNode<T>): BstNode<T> {
+        // 最大元素 node.right === null
         if (node.right === null) {
             let leftNode = node.left
             node.left = null
