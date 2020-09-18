@@ -21,7 +21,7 @@ function _mergeSort<T>(arr: T[], left: number, right: number) {
         return
     }
 
-    const middle = Math.floor((right + left) / 2)
+    const middle = left + Math.floor((right - left) / 2)
     _mergeSort(arr, left, middle)
     _mergeSort(arr, middle + 1, right)
     // 优化1
@@ -46,7 +46,7 @@ function _merge<T>(arr: T[], left: number, middle: number, right: number) {
         } else if (j > right) {
             arr[k] = aux[i - left]
             i++
-        } else if (aux[i - left] <=  aux[j - left]) {
+        } else if (aux[i - left] <= aux[j - left]) {
             arr[k] = aux[i - left]
             i++
         } else {
