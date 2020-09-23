@@ -1,4 +1,5 @@
 /**
+ * 在 n 个数中找出前 k 个高频元素
  * 时间复杂度 O(nlogk) < O(nlogn)
  */
 function topKFrequent(nums: number[], k: number) {
