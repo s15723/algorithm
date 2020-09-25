@@ -1,4 +1,4 @@
-import { swap } from "../../../packages/sort/helpers";
+import { swap } from "../../../packages/sort/helpers"
 
 /**
  * 移除元素，返回移除后数组的长度
@@ -12,9 +12,9 @@ export function removeElement(nums: number[], val: number): number {
     // [0...k] 为不需要删除的元素
     // (k...n-1] 为需要删除的目标元素
     // 需要删除的元素相对较少，swap次数较少
-    let k = n-1
+    let k = n - 1
     let i = 0
-    while(i < n) {
+    while (i < n) {
         if (nums[i] === val) {
             // 此处不需要维持原来的顺序
             // 所以将需要删除的元素和后面未处理元素交换位置
@@ -30,6 +30,6 @@ export function removeElement(nums: number[], val: number): number {
     return k + 1
 }
 
-const nums = [0,1,2,2,3,0,4,2]
+const nums = [0, 1, 2, 2, 3, 0, 4, 2]
 console.log(removeElement(nums, 2))
 console.log(nums)

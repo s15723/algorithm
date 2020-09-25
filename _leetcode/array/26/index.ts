@@ -25,7 +25,7 @@ export function removeDuplicates2(nums: number[]): number {
     // [0...k) 包含所有非重复项
     let k = 1
     for (let i = 1; i < n; i++) {
-        if (nums[i] !== nums[k-1]) {
+        if (nums[i] !== nums[k - 1]) {
             nums[k] = nums[i]
             k++
         }
@@ -33,7 +33,7 @@ export function removeDuplicates2(nums: number[]): number {
     return k
 }
 
-const nums = [0,0,1,1,1,2,2,3,3,4]
+const nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
 // console.log(removeDuplicates(nums))
 console.log(removeDuplicates2(nums))
 console.log(nums)
