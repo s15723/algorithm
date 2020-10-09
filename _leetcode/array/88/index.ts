@@ -6,7 +6,7 @@
  * 初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。
  * 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素
  */
-function merge(nums1: number[], m: number, nums2: number[], n: number): void {
+export default function merge(nums1: number[], m: number, nums2: number[], n: number): void {
     let p = m + n - 1 // 即将放入元素位置的指针
     let p1 = m - 1 // nums1 的指针
     let p2 = n - 1 // nums2 的指针
