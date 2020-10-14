@@ -46,7 +46,3 @@ function minSubArrayLen2(s: number, nums: number[]): number {
 
     return res === n + 1 ? 0 : res
 }
-
-let s = 7,
-    nums = [2, 3, 1, 2, 4, 3]
-console.log(minSubArrayLen2(s, nums))
