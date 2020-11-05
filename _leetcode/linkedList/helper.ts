@@ -11,13 +11,13 @@ export function createLinkedList(arr: number[]) {
     const n = arr.length
     if (n === 0) return null
 
-    const head = new ListNode(arr[0])
-    let curNode = head
-    for (let i = 1; i < n; i++) {
+    const dummyHead = new ListNode(-1)
+    let curNode = dummyHead
+    for (let i = 0; i < n; i++) {
         curNode.next = new ListNode(arr[i])
         curNode = curNode.next
     }
-    return head
+    return dummyHead.next
 }
 
 export function printLinkedlist(head: ListNode) {
