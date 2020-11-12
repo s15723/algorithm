@@ -9,9 +9,9 @@ function deleteDuplicates(head: ListNode | null): ListNode | null {
     let cur = head
     while(cur !== null && cur.next !== null) {
         if (cur.val === cur.next.val) {
-            let next2 = cur.next.next
-            cur.next.next = null
-            cur.next = next2
+            let deleteNode = cur.next
+            cur.next = deleteNode.next
+            deleteNode.next = null
         } else {
             cur = cur.next
         }

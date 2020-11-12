@@ -16,13 +16,14 @@ function reverseList(head: ListNode | null): ListNode | null {
     return prev
 }
 
+
 // 递归
 function reverseListRecursive(head: ListNode | null): ListNode | null {
     if (head === null || head.next === null) {
         return head
     }
 
-    const rhead = reverseList(head.next)
+    const rhead = reverseListRecursive(head.next)
     head.next.next = head
     head.next = null
 

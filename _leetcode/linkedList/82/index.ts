@@ -19,7 +19,7 @@ export function deleteDuplicates(head: ListNode | null): ListNode | null {
         if (num > 1) {
             prev.next = p
         } else {
-            prev = cur
+            prev = p
         }
         cur = p
     }
