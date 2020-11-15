@@ -143,6 +143,30 @@ export default class PerfectBST<T> {
         this._inOrder(node.right)
     }
 
+    inorderNR (root) {
+        const res = []
+        if (root === null) return res
+    
+        const stack = [this.wrapperNode('visit', root)]
+        while (stack.length) {
+            const curNode = stack.pop()
+    
+            if (curNode.type === 'print') {
+                res.push(curNode.node.val)
+            } else {
+                if (curNode.node.right) {
+                    stack.push(this.wrapperNode('visit', curNode.node.right))
+                }
+                stack.push(this.wrapperNode('print', curNode.node))
+                if (curNode.node.left) {
+                    stack.push(this.wrapperNode('visit', curNode.node.left))
+                }
+            }
+        }
+    
+        return res
+    };
+
     // 释放操作，先释放左右子节点，再释放自身
     // O(n)
     postOrder() {
@@ -157,6 +181,37 @@ export default class PerfectBST<T> {
         this._postOrder(node.left)
         this._postOrder(node.right)
         console.log(node.val)
+    }
+
+    postOrderNR (root) {
+        const res = []
+        if (root === null) return res
+    
+        const stack = [this.wrapperNode('visit', root)]
+        while (stack.length) {
+            const curNode = stack.pop()
+    
+            if (curNode.type === 'print') {
+                res.push(curNode.node.val)
+            } else {
+                stack.push(this.wrapperNode('print', curNode.node))
+                if (curNode.node.right) {
+                    stack.push(this.wrapperNode('visit', curNode.node.right))
+                }
+                if (curNode.node.left) {
+                    stack.push(this.wrapperNode('visit', curNode.node.left))
+                }
+            }
+        }
+    
+        return res
+    };
+    
+    private wrapperNode(type, node) {
+        return {
+            type,
+            node
+        }
     }
 
     // O(n)
