@@ -5,7 +5,7 @@
  * 时间 O(len(pattern)))
  * 空间 O(len(pattern)))
  */
-function wordPattern(pattern: string, s: string): boolean {
+export function wordPattern(pattern: string, s: string): boolean {
     const arr = s.split(' ')
     if (pattern.length !== arr.length) {
         return false

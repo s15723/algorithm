@@ -13,7 +13,7 @@ function intersection(nums1: number[], nums2: number[]): number[] {
             res.push(nums1[i])
             i++
             j++
-        } else if (nums1[i] < nums2[i]) {
+        } else if (nums1[i] < nums2[j]) {
             i++
         } else {
             j++
@@ -22,6 +22,6 @@ function intersection(nums1: number[], nums2: number[]): number[] {
 
     return res
 }
-let nums1 = [1, 1, 2, 2],
+let nums1 = [1, 1, 2, 3, 4, 5],
     nums2 = [2, 2, 3, 4]
 console.log(intersection(nums1, nums2))

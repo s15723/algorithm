@@ -6,22 +6,18 @@ export function isAnagram(s: string, t: string): boolean {
     for (let val of s) {
         arr[val.charCodeAt(0) - codeA]++
     }
-    console.log('arr1', [...arr])
+
     for (let val of t) {
-        if (arr[val.charCodeAt(0) - codeA]) {
+        if (arr[val.charCodeAt(0) - codeA] > 0) {
             arr[val.charCodeAt(0) - codeA]--
         }
     }
-    console.log('arr2', [...arr])
 
     for (let val of arr) {
-        if (val !== 0) {
+        if (val > 0) {
             return false
         }
     }
 
     return true
 }
-
-let s = 'anagram', t = 'nagaram'
-console.log(isAnagram(s, t))
