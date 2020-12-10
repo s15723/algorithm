@@ -32,7 +32,7 @@ function eventBus(all?: EventHandlerMap): EventBus {
 
         on<T = any>(type: EventType, handler: Handler<T>) {
             const handlers = all.get(type)
-            // handlers 是指针，所以不需要 all.set(type, all.get(type).push(handler))
+            // handlers 是指针，所以不需要 all.set(type, all.get(type).push(handler)得到的新handlers)
             const added = handlers && handlers.push(handler)
             if (!added) {
                 all.set(type, [handler])
